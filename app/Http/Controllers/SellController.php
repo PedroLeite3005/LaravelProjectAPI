@@ -8,6 +8,7 @@ use App\Models\UserStock;
 use App\Models\TransactionHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class SellController extends Controller
 {
@@ -16,6 +17,14 @@ class SellController extends Controller
         $user = Auth::user();
         $userStocks = $user->userStock;
 
+        $searchTerm = $request->searchTerm;
+        
+        if ($request->searchTerm) {
+            $userStocks = $userStocks->filter(function ($s) use ($searchTerm) {
+                return Str::contains(strtoupper($s->stock_name), strtoupper($searchTerm));
+            });
+        }
+
         $page = $request->page ?? 1;
         $stocksPerPage = 10;
         $userStocks = collect($userStocks);
@@ -23,15 +32,6 @@ class SellController extends Controller
         $lastPage = ceil($userStocks->count() / $stocksPerPage);
         $skip = ($page - 1) * $stocksPerPage;
         $userStocks = $userStocks->slice($skip, $stocksPerPage);
-
-        $searchTerm = $request->searchTerm;
-
-        if ($request->searchTerm) {
-            $userStocks = $userStocks->filter(function ($s) use ($searchTerm) {
-                stristr($s->stock_name, $searchTerm) !== false || stristr($s->stock_price, $searchTerm) !== false;
-            });
-        }
-        
 
         return view('users.vender', [
             'page' => $page,
