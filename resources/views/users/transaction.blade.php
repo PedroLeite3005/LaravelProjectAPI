@@ -58,6 +58,11 @@
             <div class="inner">
                 <div class="text-center">
                     <h3>RETIRAR</h3>
+                    @error('withdraw')
+                            <div class="alert alert-danger">
+                                {{ $errors->first('withdraw') }}
+                            </div>    
+                        @enderror
                     <form action="{{ route('transaction.withdraw') }}" method="POST">
                         @csrf
                         <input class="form-control me-2 my-2 border border-dark" placeholder="Valor" 

@@ -25,24 +25,13 @@ class UserController extends Controller
         $skip = ($page - 1) * $stocksPerPage;
         $userStocks = $userStocks->slice($skip, $stocksPerPage);
         
-        // $transactions = TransactionHistory::where('user_id', $user->id)->orderBy('created_at','desc')->get();
         $transactions = $user->transactionHistory->sortByDesc('created_at');
-
-       /*  return view('users.index', [
-            'page' => $page,
-            'lastPage' => $lastPage,
-            'userStocks' => $userStocks
-        ],compact('transactions')); */
-
-
-        return view('users.index', compact('page', 'lastPage', 'userStocks', 'transactions'));
         
-        /* return view('users.index', [
+        return view('users.index', [
             'page' => $page,
             'lastPage' => $lastPage,
             'userStocks' => $userStocks,
             'transactions' => $transactions
-        ]); */
+        ]); 
     }
-
 }

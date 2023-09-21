@@ -10,7 +10,7 @@
         regularMarketPrice: {{ $stock->regularMarketPrice }} 
     }, 
     sendBuyForm() {
-        let url = '{{ route('buyReceive') }}'
+        let url = '{{ route('stocks.buy') }}'
         axios.post(url, {
             quantity: this.quantity,
             totalAmount: (this.quantity * this.stock.regularMarketPrice).toFixed(2),
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <form action="{{ route('buyReceive') }}" method="POST" x-on:submit.prevent="sendBuyForm()">
+    <form action="{{ route('stocks.buy') }}" method="POST" x-on:submit.prevent="sendBuyForm()">
         @csrf
         <div class="modal-body">
             <div class="input-group input-group-lg">

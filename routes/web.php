@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/stocks/buy/{stock}', [ApiController::class, 'buyStockForm'])->name('stocks.buy_form');
     Route::get('/stocks/{page?}/{searchTerm?}', [ApiController::class, 'stocksIndex'])->name('stocks.index');
 
-    Route::post('/stocks', [BuyController::class, 'moneyValidate'])->name('buyReceive');
+    Route::post('/stocks', [BuyController::class, 'buyStock'])->name('stocks.buy');
     
     Route::get('/vender/{page?}/{searchTerm?}',[SellController::class, 'sellIndex'])->name('vender');
     Route::post('/vender',[SellController::class, 'actionSold'])->name('sold');

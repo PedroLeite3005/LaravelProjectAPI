@@ -47,7 +47,7 @@ class ApiController extends Controller
 
     }
 
-    public function buyStockForm(Request $request,string $stock)
+    public function buyStockForm(string $stock)
     {
         $client = new Client();
         $headers = [

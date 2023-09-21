@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class BuyController extends Controller
 {   
-    public function moneyValidate(Request $request)
+    public function buyStock(Request $request)
     {
         /** @var User $user */
         $user = Auth::user();

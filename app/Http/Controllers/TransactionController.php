@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DepositRequest;
+use App\Http\Requests\WithdrawRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,36 +16,34 @@ class TransactionController extends Controller
         return view('users.transaction');
     }
 
-    public function deposit(Request $request)
+    public function deposit(DepositRequest $request)
     {  
-        
-        $request->validate([
-            'valor' => 'numeric',
-        ]);
+        $request = $request->validated();
+
         /** @var User $user */
         $user = Auth::user(); 
-        if ($request->input('deposit')) {
-            $valueNow = $user->money;
-            $newValue = $valueNow + $request->input('deposit');
-            $user->money = $newValue;
-            $user->save();
-            
-            return back();
 
-        }elseif($request->input('withdraw')) {
-            $withdrawAmount = $request->input('withdraw');
-            $userMoney = $user->money;
+        $result = $user->update([
+            'money' => $user->money + $request['deposit']
+        ]);
+        
+        return $result
+                ? back()->with('status', 'Depósito registrado com sucesso')
+                : back()->with('error', 'Houve algum erro ao registrar o depósito');
+    }
 
-            if ($withdrawAmount > $userMoney) {
-                return back();;
-            }
+    public function withdraw(WithdrawRequest $request)
+    {
+        $request = $request->validated();
+        /** @var User $user */
+        $user = auth()->user();
 
-            $newValue = $userMoney - $withdrawAmount;
-            $newValue = round($newValue, 2);
+        $result = $user->update([
+            'money' => $user->money - $request['withdraw']
+        ]);
 
-            $user->money = $newValue;
-            $user->save();
-            return back();
-        }
+        return $result 
+                ? back()->with('status', 'Saque realizado com sucesso') 
+                : back()->with('error', 'Houve algum erro ao realizar o saque');
     }
 }
