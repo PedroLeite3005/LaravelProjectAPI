@@ -36,10 +36,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/vender/{page?}/{searchTerm?}',[SellController::class, 'sellIndex'])->name('vender');
     Route::post('/vender',[SellController::class, 'actionSold'])->name('sold');
 
+    /* Route::prefix('/stock')->group(function() {
+        Route::get('/index', [ApiController::class, 'index'])->name('stocks.index');
+        Route::get('/buy/{stock}', [ApiController::class, 'buyStockForm'])->name('stocks.buy_form');
+        Route::post('/buy', [BuyController::class, 'buyStock'])->name('stocks.buy');
+        Route::get('/sell/{page?}/{searchTerm?}',[SellController::class, 'sellIndex'])->name('stocks.sellList');
+        Route::post('/sell',[SellController::class, 'actionSold'])->name('stocks.sell');
+    }); */
+
     Route::get('/usuario', [\App\Http\Controllers\USerController::class, 'index'])->name('users.index');
 
     Route::get('/transaction', [\App\Http\Controllers\TransactionController::class, 'index'])->name('transaction');
-    Route::post('/transaction',  [\App\Http\Controllers\TransactionController::class, 'deposit']);
+    Route::post('/transaction/deposit',  [\App\Http\Controllers\TransactionController::class, 'deposit'])->name('transaction.deposit');
+    Route::post('/transaction/withdraw',  [\App\Http\Controllers\TransactionController::class, 'withdraw'])->name('transaction.withdraw');
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');

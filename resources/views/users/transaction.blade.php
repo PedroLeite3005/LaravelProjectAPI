@@ -12,6 +12,16 @@
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
     </div>
     <!-- /.content-header -->
     <div class="row col-12" style="height: 58vh;">
@@ -21,7 +31,12 @@
                 <div class="inner">
                     <div class="text-center">
                         <h3>DEPOSITAR </h3>
-                        <form method="POST">
+                        @error('deposit')
+                            <div class="alert alert-danger">
+                                {{ $errors->first('deposit') }}
+                            </div>    
+                        @enderror
+                        <form action="{{ route('transaction.deposit') }}" method="POST">
                             @csrf
                             <input class="form-control me-2 my-2 border border-dark" placeholder="Valor" 
                             name="deposit" type="text">
@@ -43,7 +58,7 @@
             <div class="inner">
                 <div class="text-center">
                     <h3>RETIRAR</h3>
-                    <form method="POST">
+                    <form action="{{ route('transaction.withdraw') }}" method="POST">
                         @csrf
                         <input class="form-control me-2 my-2 border border-dark" placeholder="Valor" 
                         name="withdraw" type="text">
@@ -60,4 +75,3 @@
     </div>
 </div>
 @endsection
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
