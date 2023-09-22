@@ -51,6 +51,19 @@
                                         <th>Data</th>
                                     </tr>
                                 </thead>
+                                <div class="d-flex col-sm-6 my-2 col-xxl-8" x-data="{
+                                    searchTerm: '',
+                                    search() {
+                                        let url = '{{ route('users.historic', [
+                                            'page' => 1,
+                                            'searchTerm' => ':searchTerm'
+                                        ]) }}'.replace(':searchTerm', this.searchTerm)
+                                        location.href = url
+                                    }
+                                }">
+                                    <input class="form-control me-2" type="search" placeholder="Código" name="searchTerm" x-model="searchTerm">
+                                    <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
+                                </div>
                                 <tbody>
                                     @foreach ($transactions as $transaction)
                                         <tr>
@@ -65,10 +78,10 @@
                                 <div class="d-flex justify-content-end p-2">
                                     <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
                                     @if($page > 1)
-                                        <a href="{{ route('users.historic', ['page' => $page-1]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
+                                        <a href="{{ route('users.historic', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
                                     @endif
                                     @if($page < $lastPage)      
-                                        <a href="{{ route('users.historic', ['page' => $page+1]) }}" class="btn btn-secondary btn-sm">Próxima</a>
+                                        <a href="{{ route('users.historic', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
                                     @endif 
                                 </div>
                             </table>

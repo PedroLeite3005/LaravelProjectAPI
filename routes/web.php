@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/sell',[SellController::class, 'sellStock'])->name('stocks.sell');
     }); 
 
-    Route::get('/historic/{page?}', [\App\Http\Controllers\USerController::class, 'index'])->name('users.historic');
+    Route::get('/historic/{page?}/{searchTerm?}', [\App\Http\Controllers\USerController::class, 'index'])->name('users.historic');
 
     Route::get('/transaction', [\App\Http\Controllers\TransactionController::class, 'index'])->name('transaction');
     Route::post('/transaction/deposit',  [\App\Http\Controllers\TransactionController::class, 'deposit'])->name('transaction.deposit');

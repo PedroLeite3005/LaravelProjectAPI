@@ -21,6 +21,7 @@ class ApiController extends Controller
 
         $response = $client->get('https://brapi.dev/api/quote/list', [
             'headers' => $headers,
+            'decode_content' => false
         ]);
 
         $stocks = json_decode($response->getBody())->stocks;
