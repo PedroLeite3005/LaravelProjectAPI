@@ -61,7 +61,7 @@
                                         location.href = url
                                     }
                                 }">
-                                    <input class="form-control me-2" type="search" placeholder="Código" name="searchTerm" x-model="searchTerm">
+                                    <input class="form-control me-2" type="search" placeholder="Código/Modo" name="searchTerm" x-model="searchTerm">
                                     <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
                                 </div>
                                 <tbody>
