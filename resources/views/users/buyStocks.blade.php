@@ -89,7 +89,7 @@
 
 function openBuyModal(event) {
     let stock = $(event.target).data('stock');
-    axios.get('/stocks/buy/' + stock)
+    axios.get('/stock/buy/' + stock)
         .then((response) => {
             let html = response.data;
             $('#form-buy-stock-modal-dialog').html(html);

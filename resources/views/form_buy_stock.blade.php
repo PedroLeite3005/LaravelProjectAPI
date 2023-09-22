@@ -56,7 +56,7 @@
             <div class="alert col-lg-12" :class="alertClass" role="alert" x-show="showAlert">
                 <span x-text="alertMessage"></span>
                 <button type="button" :class="buttonClass" data-bs-dismiss="alert" aria-label="Close" 
-                x-on:click="showAlert = false, window.location.href = '/stocks'"></button>
+                x-on:click="showAlert = false, window.location.href = '/stock/index'"></button>
             </div>
         
             <button type="button" class="btn btn-danger" data-dismiss="modal"  x-show="buttonVisible" 

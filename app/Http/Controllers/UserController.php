@@ -15,22 +15,21 @@ class UserController extends Controller
                     ->where('id', Auth::user()->id)
                     ->first();
 
-        $userStocks = $user->userStock;
+        $transactions = $user->transactionHistory;
 
         $page = $request->page ?? 1;
         $stocksPerPage = 10;
-        $userStocks = collect($userStocks);
+        $transactions = collect($transactions);
 
-        $lastPage = ceil($userStocks->count() / $stocksPerPage);
-        $skip = ($page - 1) * $stocksPerPage;
-        $userStocks = $userStocks->slice($skip, $stocksPerPage);
-        
         $transactions = $user->transactionHistory->sortByDesc('created_at');
+
+        $lastPage = ceil($transactions->count() / $stocksPerPage);
+        $skip = ($page - 1) * $stocksPerPage;
+        $transactions = $transactions->slice($skip, $stocksPerPage);
         
-        return view('users.index', [
+        return view('users.historic', [
             'page' => $page,
             'lastPage' => $lastPage,
-            'userStocks' => $userStocks,
             'transactions' => $transactions
         ]); 
     }

@@ -57,7 +57,7 @@
                                             <td>{{ $transaction->name }}</td>
                                             <td>{{ $transaction->price }}</td>
                                             <td>{{ $transaction->quantity }}</td>
-                                            <td>{{ $transaction->type }}</td>
+                                            <td>{{ strtoupper($transaction->type) }}</td>
                                             <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
                                         </tr>
                                     @endforeach
@@ -65,11 +65,11 @@
                                 <div class="d-flex justify-content-end p-2">
                                     <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
                                     @if($page > 1)
-                                        <a href="{{ route('users.index', ['page' => $page-1]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
+                                        <a href="{{ route('users.historic', ['page' => $page-1]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
                                     @endif
                                     @if($page < $lastPage)      
-                                        <a href="{{ route('users.index', ['page' => $page+1]) }}" class="btn btn-secondary btn-sm">Próxima</a>
-                                    @endif
+                                        <a href="{{ route('users.historic', ['page' => $page+1]) }}" class="btn btn-secondary btn-sm">Próxima</a>
+                                    @endif 
                                 </div>
                             </table>
                         </div>

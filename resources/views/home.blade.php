@@ -38,7 +38,7 @@
             <div class="icon">
                 <i class="ion ion-person-add"></i>
             </div>
-            <a href="{{ route('users.index') }}" class="small-box-footer">Mais Informações  
+            <a href="{{ route('users.historic') }}" class="small-box-footer">Mais Informações  
                 <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
@@ -67,7 +67,7 @@
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="{{ route('vender') }}" class="small-box-footer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ route('stocks.sellList') }}" class="small-box-footer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     {{--  --}}

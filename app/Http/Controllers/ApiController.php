@@ -38,7 +38,7 @@ class ApiController extends Controller
         $skip = ($page - 1) * $stocksPerPage;
         $stocks = $stocks->slice($skip, $stocksPerPage);
 
-        return view('users.comprar', [
+        return view('users.buyStocks', [   
             'page' => $page,
             'lastPage' => $lastPage,
             'stocks' => $stocks, 

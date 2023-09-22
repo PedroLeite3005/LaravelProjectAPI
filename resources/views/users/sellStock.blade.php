@@ -7,7 +7,7 @@
     <div class="d-flex col-sm-6 my-2 col-xxl-8" x-data="{
         searchTerm: '',
         search() {
-            let url = '{{ route('vender', [
+            let url = '{{ route('stocks.sellList', [
                 'page' => 1,
                 'searchTerm' => ':searchTerm'
             ]) }}'.replace(':searchTerm', this.searchTerm)
@@ -20,12 +20,22 @@
     <div class="d-flex allign-items justify-content-end ml-5">
         <p class="my-0 ml-5">Página {{ $page }} de um  total de {{ $lastPage }}</p>
         @if($page > 1)
-            <a href="{{ route('vender', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm ml-1">Anterior</a>
+            <a href="{{ route('stocks.sellList', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm ml-1 my-1">Anterior</a>
         @endif
         @if($page < $lastPage)      
-            <a href="{{ route('vender', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm ml-1">Próxima</a>
+            <a href="{{ route('stocks.sellList', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm ml-1 my-1">Próxima</a>
         @endif
     </div>
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div>
         <table class="table table-striped border border-dark">
             <thead class="thead-dark">
@@ -49,7 +59,7 @@
                         R$ <span x-text="(parseFloat('{{ $userStock->stock_price }}') * quantity).toFixed(2)"></span>
                     </td>
                     <td>
-                        <form action="{{ route('sold') }}" method="POST">
+                        <form action="{{ route('stocks.sell') }}" method="POST">
                             @csrf
                             <input type="hidden" name="stock_id" value="{{ $userStock->id }}">
                             <input type="hidden" name="stock_name" value="{{ $userStock->stock_name }}">
