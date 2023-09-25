@@ -41,15 +41,15 @@ class TransactionController extends Controller
 
         if ($withdrawAmount > $user->money) {
             return back()->with('error', 'Saldo Insuficiente');
-        }else {
-            $newMoney = round($user->money - $withdrawAmount, 2);
-            $result = $user->update([
-                'money' => $newMoney
-            ]);
         }
 
+        $newMoney = round($user->money - $withdrawAmount, 2);
+        $result = $user->update([
+            'money' => $newMoney
+        ]);
+
         return $result
-                ? back()->with('status', 'Depósito registrado com sucesso')
-                : back()->with('error', 'Houve algum erro ao registrar o depósito');
+                ? back()->with('status', 'Operação realizada com sucesso')
+                : back()->with('error', 'Houve algum erro ao registrar a operação');
     }
 }

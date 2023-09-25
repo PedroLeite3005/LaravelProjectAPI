@@ -29,8 +29,8 @@ class WithdrawRequest extends FormRequest
     public function messages()
     {
         return [
-            'numeric' => 'O valor do depósito deve ser numérico',
-            'min' => 'O depósito mínimo é de um centavo'
+            'numeric' => 'O valor de retirada deve ser numérico',
+            'min' => 'O valor de retirada mínimo é de um centavo'
         ];
     }  
 }

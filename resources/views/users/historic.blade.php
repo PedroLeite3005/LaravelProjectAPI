@@ -45,7 +45,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Ação</th>
-                                        <th>Preço</th>
+                                        <th>Preço Total</th>
                                         <th>Quantidade</th>
                                         <th>Modo</th>
                                         <th>Data</th>
