@@ -18,10 +18,17 @@ public function index(Request $request)
 
     $searchTerm = $request->searchTerm;
     $transactions = $user->transactionHistory;
+    $category = $request->input('type');
 
     if ($searchTerm) {
         $transactions = $transactions->filter(function ($s) use ($searchTerm) {
-            return Str::contains(strtoupper($s->name), strtoupper($searchTerm)) || Str::contains(strtoupper($s->type), strtoupper($searchTerm));
+            return Str::contains(strtoupper($s->name), strtoupper($searchTerm));
+        });
+    }
+
+    if ($category) {
+        $transactions = $transactions->filter(function ($s) use ($category) {
+            return Str::contains(strtoupper($s->type), strtoupper($category));
         });
     }
 
@@ -39,7 +46,7 @@ public function index(Request $request)
         'page' => $page,
         'lastPage' => $lastPage,
         'transactions' => $transactions,
-        'searchTerm' => $request->searchTerm
+        'searchTerm' => $searchTerm,
     ]); 
-}
+    }
 }

@@ -47,52 +47,63 @@
                                         <th>Ação</th>
                                         <th>Preço Total</th>
                                         <th>Quantidade</th>
-                                        <th>Modo</th>
+                                        <th>Operação</th>
                                         <th>Data</th>
                                     </tr>
                                 </thead>
-                                <div class="d-flex col-sm-6 my-2 col-xxl-8" x-data="{
-                                    searchTerm: '',
-                                    search() {
-                                        let url = '{{ route('users.historic', [
-                                            'page' => 1,
-                                            'searchTerm' => ':searchTerm'
-                                        ]) }}'.replace(':searchTerm', this.searchTerm)
-                                        location.href = url
-                                    }
-                                }">
-                                    <input class="form-control me-2" type="search" placeholder="Código/Modo" name="searchTerm" x-model="searchTerm">
-                                    <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
-                                </div>
-                                <tbody>
-                                    @foreach ($transactions as $transaction)
-                                        <tr>
-                                            <td>{{ $transaction->name }}</td>
-                                            <td>{{ $transaction->price }}</td>
-                                            <td>{{ $transaction->quantity }}</td>
-                                            <td>{{ strtoupper($transaction->type) }}</td>
-                                            <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <div class="d-flex justify-content-end p-2">
-                                    <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
-                                    @if($page > 1)
-                                        <a href="{{ route('users.historic', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
-                                    @endif
-                                    @if($page < $lastPage)      
-                                        <a href="{{ route('users.historic', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
-                                    @endif 
-                                </div>
-                            </table>
+                                <div> 
+                                    <div class="d-flex col-sm-12 my-2 col-xxl-12" style="height: 7vh;" x-data="{
+                                        searchTerm: '',
+                                        search() {
+                                            let url = '{{ route('users.historic', [
+                                                'page' => 1,
+                                                'searchTerm' => ':searchTerm'
+                                            ]) }}'.replace(':searchTerm', this.searchTerm)
+                                            location.href = url
+                                        }
+                                    }">
+                                        <input class="form-control me-2 col-lg-4" type="search" placeholder="Código" name="searchTerm" x-model="searchTerm">
+                                        <button class="btn btn-outline-success mx-1" type="submit" x-on:click="search()">Pesquisar</button>
+                                        <form action="{{ route('users.historic') }}">
+                                            <select name="type" class="ml-4 mx-1 form-select">
+                                                <option value="" selected>Todos</option>
+                                                <option value="compra">Compra</option>
+                                                <option value="venda">Venda</option>
+                                                <option value="deposito">Depósito</option>
+                                                <option value="saque">Saque</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-success">Filtrar</button>
+                                        </form>
+                                    </div>
+                                
+                                    <tbody>
+                                        @foreach ($transactions as $transaction)
+                                            <tr>
+                                                <td>{{ $transaction->name }}</td>
+                                                <td>R$ {{ $transaction->price }}</td>
+                                                <td>{{ $transaction->quantity }}</td>
+                                                <td>{{ strtoupper($transaction->type) }}</td>
+                                                <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <div class="d-flex justify-content-end p-2">
+                                        <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
+                                        @if($page > 1)
+                                            <a href="{{ route('users.historic', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
+                                        @endif
+                                        @if($page < $lastPage)      
+                                            <a href="{{ route('users.historic', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
+                                        @endif 
+                                    </div>
+                                </table>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
-
                 </div>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
-    </div>
     <!-- /.content -->
 @endsection

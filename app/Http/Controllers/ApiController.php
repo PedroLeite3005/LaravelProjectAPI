@@ -25,11 +25,10 @@ public function stocksIndex(Request $request)
     ]);
 
     $stocks = json_decode($response->getBody())->stocks;
-
     $stocks = collect($stocks);
     $searchTerm = $request->searchTerm;
 
-    if ($request->searchTerm) {
+    if ($searchTerm) {
         $stocks = $stocks->filter(function ($s) use ($searchTerm) {
             return stristr($s->name, $searchTerm) !== false || stristr($s->stock, $searchTerm) !== false;
         });
@@ -43,9 +42,8 @@ public function stocksIndex(Request $request)
         'page' => $page,
         'lastPage' => $lastPage,
         'stocks' => $stocks, 
-        'searchTerm' => $request->searchTerm
+        'searchTerm' => $searchTerm
     ]);
-
 }
 
     public function buyStockForm(string $stock)
@@ -63,8 +61,6 @@ public function stocksIndex(Request $request)
 
         return view('form_buy_stock', [
             'stock' => $stockInfo,
-        ]);
-
-      
+        ]);      
     }
 }

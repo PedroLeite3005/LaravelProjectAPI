@@ -7,6 +7,7 @@ use App\Http\Requests\DepositRequest;
 use App\Models\User;
 use App\http\Requests\WithdrawRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -18,15 +19,23 @@ class TransactionController extends Controller
     public function deposit(DepositRequest $request)
     {  
         $request = $request->validated();
-
         /** @var User $user */
-        $user = Auth::user(); 
+        $user = Auth::user();
 
-        $result = $user->update([
-            'money' => $user->money + $request['deposit']
-        ]);
-        
-        return $result
+        $response = DB::transaction(function () use ($user, $request) {
+            $user->update([
+                'money' => $user->money + $request['deposit']
+            ]);
+
+            $user->transactionHistory()->create([
+                'type' => 'deposito',
+                'name' => 'Depósito',
+                'quantity' => '-',
+                'price' => $request['deposit']
+            ]);
+            return true;
+        });
+         return $response
                 ? back()->with('status', 'Depósito registrado com sucesso')
                 : back()->with('error', 'Houve algum erro ao registrar o depósito');
     }
@@ -43,13 +52,22 @@ class TransactionController extends Controller
             return back()->with('error', 'Saldo Insuficiente');
         }
 
-        $newMoney = round($user->money - $withdrawAmount, 2);
-        $result = $user->update([
-            'money' => $newMoney
-        ]);
+        $response = DB::transaction(function () use ($user, $withdrawAmount) {
+            $newMoney = round($user->money - $withdrawAmount, 2);
+            $user->update([
+                'money' => $newMoney
+            ]);
 
-        return $result
-                ? back()->with('status', 'Operação realizada com sucesso')
+            $user->transactionHistory()->create([
+                'type' => 'saque',
+                'name' => 'Saque',
+                'quantity' => '-',
+                'price' => $withdrawAmount
+            ]);
+            return true;
+        });
+        return $response
+                ? back()->with('status', 'Operação realizada com sucesso')
                 : back()->with('error', 'Houve algum erro ao registrar a operação');
     }
 }

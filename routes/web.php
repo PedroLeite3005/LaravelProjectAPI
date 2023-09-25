@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\SellController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,12 +38,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/sell',[SellController::class, 'sellStock'])->name('stocks.sell');
     }); 
 
-    Route::get('/historic/{page?}/{searchTerm?}', [\App\Http\Controllers\USerController::class, 'index'])->name('users.historic');
+    Route::prefix('/transaction')->group(function() {
+        Route::get('/index', [TransactionController::class, 'index'])->name('transaction');
+        Route::post('/deposit',  [TransactionController::class, 'deposit'])->name('transaction.deposit');
+        Route::post('/withdraw',  [TransactionController::class, 'withdraw'])->name('transaction.withdraw');
+    });
 
-    Route::get('/transaction', [\App\Http\Controllers\TransactionController::class, 'index'])->name('transaction');
-    Route::post('/transaction/deposit',  [\App\Http\Controllers\TransactionController::class, 'deposit'])->name('transaction.deposit');
-    Route::post('/transaction/withdraw',  [\App\Http\Controllers\TransactionController::class, 'withdraw'])->name('transaction.withdraw');
+    Route::get('/historic/{page?}/{searchTerm?}', [UserController::class, 'index'])->name('users.historic');
 
-    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 });

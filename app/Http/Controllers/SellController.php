@@ -19,7 +19,7 @@ class SellController extends Controller
 
         $searchTerm = $request->searchTerm;
         
-        if ($request->searchTerm) {
+        if ($searchTerm) {
             $userStocks = $userStocks->filter(function ($s) use ($searchTerm) {
                 return Str::contains(strtoupper($s->stock_name), strtoupper($searchTerm));
             });
@@ -37,7 +37,7 @@ class SellController extends Controller
             'page' => $page,
             'lastPage' => $lastPage,
             'userStocks' => $userStocks,
-            'searchTerm' => $request->searchTerm
+            'searchTerm' => $searchTerm
         ]);
     }
 

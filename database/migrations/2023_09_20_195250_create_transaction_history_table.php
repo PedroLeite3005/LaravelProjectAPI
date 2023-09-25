@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("name");
             $table->float("price");
             $table->unsignedInteger("quantity");
-            $table->enum('type', ['compra', 'venda'])->default('compra');
+            $table->enum('type', ['compra', 'venda', 'deposito', 'saque'])->default('compra');
             $table->timestamps();
         });
     }
