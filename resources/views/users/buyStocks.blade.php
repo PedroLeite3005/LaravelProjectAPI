@@ -43,7 +43,6 @@
                         @endif
                     </div>
                     <div class="card-body border border-success text-center" style="background-color: #F0F0F0">
-                        <!-- Loop para exibir as ações filtradas -->
                         @foreach ($stocks as $stock)
                         <div class="card d-inline-block border border-dark" style="width: 28vh;margin-right: 20px;">
                             <img src="{{ $stock->logo }}" class="card-img-top mt-2 border border-dark"
@@ -63,7 +62,6 @@
                             </div>
                         </div>
                         @endforeach
-                        <!-- Fim do loop -->
                     </div>
                 </div>
             </div>
