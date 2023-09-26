@@ -54,25 +54,34 @@
                                 <div> 
                                     <div class="d-flex col-sm-12 my-2 col-xxl-12" style="height: 7vh;" x-data="{
                                         searchTerm: '',
+                                        type: '',
                                         search() {
                                             let url = '{{ route('users.historic', [
                                                 'page' => 1,
+                                                'type' => ':type',
                                                 'searchTerm' => ':searchTerm'
-                                            ]) }}'.replace(':searchTerm', this.searchTerm)
+                                            ]) }}'.replace(':searchTerm', this.searchTerm) 
+                                            location.href = url
+                                        },
+                                        filter(){
+                                            let url = '{{ route('users.historic', [
+                                                'page' => 1,
+                                                'type' => ':type',
+                                            ]) }}'.replace(':type', this.type)
                                             location.href = url
                                         }
                                     }">
                                         <input class="form-control me-2 col-lg-4" type="search" placeholder="Código" name="searchTerm" x-model="searchTerm">
                                         <button class="btn btn-outline-success mx-1" type="submit" x-on:click="search()">Pesquisar</button>
                                         <form action="{{ route('users.historic') }}">
-                                            <select name="type" class="ml-4 mx-1 form-select">
+                                            <select name="type" class="ml-4 mx-1 form-select" x-model="type">
                                                 <option value="" selected>Todos</option>
                                                 <option value="compra">Compra</option>
                                                 <option value="venda">Venda</option>
                                                 <option value="deposito">Depósito</option>
                                                 <option value="saque">Saque</option>
                                             </select>
-                                            <button type="submit" class="btn btn-success">Filtrar</button>
+                                            <button type="submit" class="btn btn-success" x-on:click="filter()">Filtrar</button>
                                         </form>
                                     </div>
                                 
@@ -90,10 +99,10 @@
                                     <div class="d-flex justify-content-end p-2">
                                         <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
                                         @if($page > 1)
-                                            <a href="{{ route('users.historic', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
+                                            <a href="{{ route('users.historic', ['page' => $page-1, 'type' => $type,'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
                                         @endif
                                         @if($page < $lastPage)      
-                                            <a href="{{ route('users.historic', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
+                                            <a href="{{ route('users.historic', ['page' => $page+1, 'type' => $type,'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
                                         @endif 
                                     </div>
                                 </table>

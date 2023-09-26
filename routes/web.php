@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/withdraw',  [TransactionController::class, 'withdraw'])->name('transaction.withdraw');
     });
 
-    Route::get('/historic/{page?}/{searchTerm?}', [UserController::class, 'index'])->name('users.historic');
+    Route::get('/historic/{page?}/{type?}/{searchTerm?}', [UserController::class, 'index'])->name('users.historic');
 
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');

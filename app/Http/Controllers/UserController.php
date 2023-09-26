@@ -47,6 +47,7 @@ public function index(Request $request)
         'lastPage' => $lastPage,
         'transactions' => $transactions,
         'searchTerm' => $searchTerm,
+        'type' => $category
     ]); 
     }
 }
