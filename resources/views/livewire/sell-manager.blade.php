@@ -3,10 +3,8 @@
         <h1>Minhas Ações</h1>
         <h2 class="col-sm-4">{{ __('Saldo: R$') }}{{ Auth::user()->money }}</h2>
         <div class="d-flex col-sm-6 my-2 col-xxl-8">
-        <form wire:submit.prevent="search">
             <input class="form-control me-2" type="search" placeholder="Código" wire:model="searchTerm">
-            <button class="btn btn-outline-success" type="submit" >Pesquisar</button>
-        </form>
+            <button class="btn btn-outline-success" type="submit" wire:click="sellIndex">Pesquisar</button>
         </div>
         <div class="d-flex allign-items justify-content-end ml-5">
             <p class="my-0 ml-5">Página {{ $page }} de um  total de {{ $lastPage }}</p>

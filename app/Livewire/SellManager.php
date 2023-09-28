@@ -16,7 +16,7 @@ class SellManager extends Component
     public $page = 1;
     public $stocksPerPage = 10;
     public $lastPage;
-    public $searchTerm;
+    public $searchTerm = '';
     public $userStocks;
     public $stock_id;
 
@@ -40,13 +40,6 @@ class SellManager extends Component
         $this->lastPage = ceil($userStocks->count() / $this->stocksPerPage);
         $skip = ($page - 1) * $this->stocksPerPage;
         $userStocks = $userStocks->slice($skip, $this->stocksPerPage);
-    }
-    public function search()
-    {
-        /** @var User $user */
-        $user = auth()->user();
-        $userStocks = $user->userStock;
-        $userStocks = collect($this->userStocks);
 
         $searchTerm = $this->searchTerm;
         if ($searchTerm) {
@@ -98,6 +91,8 @@ class SellManager extends Component
 
     public function render()
     {      
-        return view('livewire.sell-manager');
+        return view('livewire.sell-manager', [
+            'userStocks' => $this->searchTerm,
+        ]);
     }
 }
