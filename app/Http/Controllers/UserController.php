@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -13,7 +12,7 @@ public function index(Request $request)
 {
     /** @var User $user */
     $user = User::with('userStock', 'transactionHistory')
-                ->where('id', Auth::user()->id)
+                ->where('id', auth()->user()->id)
                 ->first();
 
     $searchTerm = $request->searchTerm;

@@ -12,70 +12,47 @@ use Illuminate\Support\Str;
 
 class SellController extends Controller
 {
-    public function sellIndex(Request $request)
+    public function sellIndex()
     {
-        $user = Auth::user();
-        $userStocks = $user->userStock;
-
-        $searchTerm = $request->searchTerm;
-        
-        if ($searchTerm) {
-            $userStocks = $userStocks->filter(function ($s) use ($searchTerm) {
-                return Str::contains(strtoupper($s->stock_name), strtoupper($searchTerm));
-            });
-        }
-
-        $page = $request->page ?? 1;
-        $stocksPerPage = 10;
-        $userStocks = collect($userStocks);
-
-        $lastPage = ceil($userStocks->count() / $stocksPerPage);
-        $skip = ($page - 1) * $stocksPerPage;
-        $userStocks = $userStocks->slice($skip, $stocksPerPage);
-
-        return view('users.sellStock', [
-            'page' => $page,
-            'lastPage' => $lastPage,
-            'userStocks' => $userStocks,
-            'searchTerm' => $searchTerm
-        ]);
+        return view('users.sellStock');
     }
 
-public function sellStock(Request $request){
-    /** @var User $user */
-    $user = Auth::user();
+// public function sellStock(Request $request)
+// {
+//     /** @var User $user */
+//     $user = Auth::user();
 
-    $userStock = UserStock::find($request->stock_id);
+//     $userStock = UserStock::find($request->stock_id);
 
-    if (!$userStock) {
-        return back()->with('error', 'Ação não encontrada');
-    }
+//     if (!$userStock) {
+//         return back()->with('error', 'Ação não encontrada');
+//     }
 
-    try {
-        $result = DB::transaction(function() use ($user, $request, $userStock) {
-            $userStock->decrement('stock_quantity', $request->quantity);
+//     try {
+//         $result = DB::transaction(function() use ($user, $request, $userStock) {
+//             $userStock->decrement('stock_quantity', $request->quantity);
 
-            if ($userStock->stock_quantity == 0) {
-                $userStock->delete(); 
-            }
+//             if ($userStock->stock_quantity == 0) {
+//                 $userStock->delete(); 
+//             }
 
-            $user->increment('money', $request->sellAmount);
+//             $user->increment('money', $request->sellAmount);
 
-            $user->transactionHistory()->create([
-                'type' => 'venda',
-                'name' => $request->stock_name, 
-                'quantity' => $request->quantity,
-                'price' => $request->sellAmount,
-            ]);
-            return true;
-        });
+//             $user->transactionHistory()->create([
+//                 'type' => 'venda',
+//                 'name' => $request->stock_name, 
+//                 'quantity' => $request->quantity,
+//                 'price' => $request->sellAmount,
+//             ]);
+//             return true;
+//         });
     
-    } catch (\Exception $e) {
-        return false;
-        }
+//     } catch (\Exception $e) {
+//         return false;
+//         }
 
-    return $result
-        ? back()->with('success', 'Venda registrada com sucesso')
-        : back()->with('error', 'Houve algum erro ao registrar a venda');
-    }
+//     return $result
+//         ? back()->with('success', 'Venda registrada com sucesso')
+//         : back()->with('error', 'Houve algum erro ao registrar a venda');
+//     }
 }

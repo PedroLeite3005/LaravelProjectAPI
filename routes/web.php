@@ -35,14 +35,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/buy/{stock}', [ApiController::class, 'buyStockForm'])->name('stocks.buyForm');
         Route::post('/buy', [BuyController::class, 'buyStock'])->name('stocks.buy');
         Route::get('/sell/{page?}/{searchTerm?}',[SellController::class, 'sellIndex'])->name('stocks.sellList');
-        Route::post('/sell',[SellController::class, 'sellStock'])->name('stocks.sell');
     }); 
 
-    Route::prefix('/transaction')->group(function() {
-        Route::get('/index', [TransactionController::class, 'index'])->name('transaction');
-        Route::post('/deposit',  [TransactionController::class, 'deposit'])->name('transaction.deposit');
-        Route::post('/withdraw',  [TransactionController::class, 'withdraw'])->name('transaction.withdraw');
-    });
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
 
     Route::get('/historic/{page?}/{type?}/{searchTerm?}', [UserController::class, 'index'])->name('users.historic');
 

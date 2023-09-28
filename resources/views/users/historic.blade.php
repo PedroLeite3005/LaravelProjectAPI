@@ -30,9 +30,9 @@
                             <tbody>
                             
                                 <tr>
-                                    <td>{{ Auth::user()->name}}</td>
-                                    <td>{{ Auth::user()->email }}</td>
-                                    <td>R${{ Auth::user()->money }}</td>
+                                    <td>{{ auth()->user()->name}}</td>
+                                    <td>{{ auth()->user()->email }}</td>
+                                    <td>R${{ auth()->user()->money }}</td>
                                 </tr>
                             
                             </tbody>

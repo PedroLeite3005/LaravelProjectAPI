@@ -13,6 +13,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
     @yield('styles')
+    @livewireStyles
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -100,5 +101,6 @@
 <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
 @yield('scripts')
+@livewireScripts
 </body>
 </html>

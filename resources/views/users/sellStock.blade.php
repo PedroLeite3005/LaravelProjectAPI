@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" >
+{{-- <div class="container" >
     <h1>Minhas Ações</h1>
     <h2 class="col-sm-4">{{ __('Saldo: R$') }}{{ Auth::user()->money }}</h2>
     <div class="d-flex col-sm-6 my-2 col-xxl-8" x-data="{
@@ -73,5 +73,6 @@
             </tbody>
         </table>
     </div>
-</div>
+</div> --}}
+    @livewire('sell-manager')
 @endsection

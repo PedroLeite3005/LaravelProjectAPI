@@ -77,7 +77,7 @@
             <img src="/images/loading.gif" alt="Carregando">
         </div>
     </div>
-</div> 
+</div>  
 
 @endsection
 
