@@ -16,7 +16,6 @@ class SellManager extends Component
     public $page = 1;
     public $stocksPerPage = 10;
     public $lastPage;
-    public $searchTerm = '';
     public $userStocks;
     public $stock_id;
 
@@ -25,28 +24,27 @@ class SellManager extends Component
         $this->money = auth()->user()->money;
         $this->userStocks = auth()->user()->userStock;
         $this->stock_id = $this->userStocks->first()->id;
-        $this->page = 1;
+        $this->lastPage = ceil($this->userStocks->count() / $this->stocksPerPage);
     }
-
-    public function sellIndex()
+    
+    public function sellIndex(string $searchTerm)
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $userStocks = $user->userStock;
+        $userStocks = auth()->user()->userStock;
 
         $page = $this->page ?? 1;
-        $userStocks = collect($this->userStocks);
     
-        $this->lastPage = ceil($userStocks->count() / $this->stocksPerPage);
-        $skip = ($page - 1) * $this->stocksPerPage;
-        $userStocks = $userStocks->slice($skip, $this->stocksPerPage);
-
-        $searchTerm = $this->searchTerm;
         if ($searchTerm) {
-            $userStocks = $userStocks->filter(function ($s) use($searchTerm) {
+            $this->userStocks = $userStocks->filter(function ($s) use($searchTerm) {
                 return Str::contains(strtoupper($s->stock_name), strtoupper($searchTerm));
             });
+        } else {
+            $this->userStocks = $userStocks;
         }
+
+        $this->lastPage = ceil($userStocks->count() / $this->stocksPerPage);
+        $skip = ($page - 1) * $this->stocksPerPage;
+        $this->userStocks = $this->userStocks->slice($skip, $this->stocksPerPage);
+
     }
     public function sellStock(int $stockId, int $quantity, float $sellAmount, string $stockName)
     {
@@ -91,8 +89,10 @@ class SellManager extends Component
 
     public function render()
     {      
-        return view('livewire.sell-manager', [
-            'userStocks' => $this->searchTerm,
+        return view('livewire.sell-manager',[
+            'userStocks' => $this->userStocks,
+            'page' => $this->page,
+            'lastPage' => $this->lastPage
         ]);
     }
 }

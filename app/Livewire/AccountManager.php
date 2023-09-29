@@ -36,7 +36,7 @@ class AccountManager extends Component
         $this->validateOnly('depositValue');
         
         try {
-            $response = DB::transaction(function () {
+            DB::transaction(function () {
                 /** @var User $user */
                 $user = auth()->user();
                 $user->update([
@@ -52,16 +52,13 @@ class AccountManager extends Component
                 
                 $this->money = $user->money;
                 
-                return true;
+                return back()->with('status', 'Depósito registrado com sucesso');
             });
         } catch (\Exception $e) {
-            return false;
+            return back()->with('error', 'Houve algum erro ao registrar o depósito');
         }
         
        $this->reset();
-        return $response
-        ? back()->with('status', 'Depósito registrado com sucesso')
-        : back()->with('error', 'Houve algum erro ao registrar o depósito');
     }
 
     public function withdraw()
@@ -76,32 +73,28 @@ class AccountManager extends Component
                 return back()->with('error', 'Saldo Insuficiente');
             }
 
-            $response = DB::transaction(function () use ($user, $withdrawAmount) {
-            $newMoney = round($user->money - $withdrawAmount, 2);
-            $user->update([
-                'money' => $newMoney
-            ]);
+            DB::transaction(function () use ($user, $withdrawAmount) {
+                $newMoney = round($user->money - $withdrawAmount, 2);
+                $user->update([
+                    'money' => $newMoney
+                ]);
 
-            $user->transactionHistory()->create([
-                'type' => 'saque',
-                'name' => 'Saque',
-                'quantity' => '-',
-                'price' => $withdrawAmount
-            ]);
+                $user->transactionHistory()->create([
+                    'type' => 'saque',
+                    'name' => 'Saque',
+                    'quantity' => '-',
+                    'price' => $withdrawAmount
+                ]);
 
-            $this->money = $user->money;
-            $this->withdrawValue = 0;
-            
-            return true;
-        });
+                $this->money = $user->money;
+                $this->withdrawValue = 0;
+                
+                return back()->with('status', 'Saque registrado com sucesso');
+            });
     
         } catch (\Exception $e) {
-            return false;
+            return back()->with('error', 'Houve algum erro ao registrar o saque');
         }   
-
-        return $response
-        ? back()->with('status', 'Saque registrado com sucesso')
-        : back()->with('error', 'Houve algum erro ao registrar o saque');
     }
 
 

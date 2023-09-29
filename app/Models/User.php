@@ -44,7 +44,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function userStock(){
+    public function userStock()
+    {
         return $this->hasMany(UserStock::class);
     }
 
