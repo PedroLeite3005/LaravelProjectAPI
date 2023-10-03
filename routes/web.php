@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,8 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/stock')->group(function() {
         Route::get('/index/{page?}/{searchTerm?}', [ApiController::class, 'stocksIndex'])->name('stocks.index');
         Route::get('/buy/{stock}', [ApiController::class, 'buyStockForm'])->name('stocks.buyForm');
-        Route::post('/buy', [BuyController::class, 'buyStock'])->name('stocks.buy');
-        Route::get('/sell/{page?}/{searchTerm?}',[SellController::class, 'sellIndex'])->name('stocks.sellList');
+        // Route::post('/buy', [BuyController::class, 'buyStock'])->name('stocks.buy');
+        Route::get('/sell',[SellController::class, 'sellIndex'])->name('stocks.sellList');
     }); 
 
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');

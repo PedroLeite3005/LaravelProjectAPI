@@ -1,31 +1,14 @@
 <div>
     <div class="container" >
         <h1>Minhas Ações</h1>
-        <h2 class="col-sm-4">{{ __('Saldo: R$') }}{{ auth()->user()->money }}</h2>
-        <div class="d-flex col-sm-6 my-2 col-xxl-8" x-data="{
-            searchTerm: '',
-            search() {
-                $wire.sellIndex(this.searchTerm)
-                    .then(result => {
-                        if (result) {
-                            console.log('Venda realizada com sucesso')
-                        } else {
-                            console.log('Erro ao realizar a venda')
-                        }
-                    });
-            }
-        }">
-            <input class="form-control me-2" type="search" placeholder="Código" x-model="searchTerm"> 
-            <button class="btn btn-outline-success" type="submit" x-on:click='search()'>Pesquisar</button>
-        </div>
-        <div class="d-flex allign-items justify-content-end ml-5">
-            <p class="my-0 ml-5">Página {{ $page }} de um  total de {{ $lastPage }}</p>
-            @if($page > 1)
-                <a href="{{ route('stocks.sellList', ['page' => $page-1]) }}" class="btn btn-secondary btn-sm ml-1 my-1">Anterior</a>
-            @endif
-            @if($page < $lastPage)      
-                <a href="{{ route('stocks.sellList', ['page' => $page+1]) }}" class="btn btn-secondary btn-sm ml-1 my-1">Próxima</a>
-            @endif
+        <h2 class="col-sm-6">{{ __('Saldo disponível: R$') }}{{ auth()->user()->money }}</h2>
+        <h5 class="mx-2 text-muted">{{ __('Saldo em ações: R$') }}{{ auth()->user()->userStock()->sum('stock_price') }}</h5>
+        <div class="d-flex justify-content-between col-sm-12 my-2 col-xxl-12">
+            <input class="form-control me-2 col-sm-6" type="search" placeholder="Código" wire:model.live="searchTerm"> 
+            <div class="d-flex inline-block mx-1">
+                <p class="mx-2">Página {{ $userStocks->currentPage() }} de um  total de {{ $userStocks->lastPage() }}</p>
+                {{ $userStocks->links() }} 
+            </div>
         </div>
         @if (session('success'))
         <div class="alert alert-success">

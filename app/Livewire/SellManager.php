@@ -5,51 +5,38 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use App\Models\UserStock;
+use Livewire\WithPagination;
 
 class SellManager extends Component
 {
     protected User $user;
 
-    public float $money;
-    public $page = 1;
-    public $stocksPerPage = 10;
-    public $lastPage;
-    public $userStocks;
+    use WithPagination;
+
+    private $userStocks;
+    private float $money;
+
     public $stock_id;
+    public $searchTerm = '';
 
     public function mount()
     {
         $this->money = auth()->user()->money;
-        $this->userStocks = auth()->user()->userStock;
-        $this->stock_id = $this->userStocks->first()->id;
-        $this->lastPage = ceil($this->userStocks->count() / $this->stocksPerPage);
     }
     
-    public function sellIndex(string $searchTerm)
+    public function sellIndex()
     {
-        $userStocks = auth()->user()->userStock;
-
-        $page = $this->page ?? 1;
-    
-        if ($searchTerm) {
-            $this->userStocks = $userStocks->filter(function ($s) use($searchTerm) {
-                return Str::contains(strtoupper($s->stock_name), strtoupper($searchTerm));
-            });
-        } else {
-            $this->userStocks = $userStocks;
-        }
-
-        $this->lastPage = ceil($userStocks->count() / $this->stocksPerPage);
-        $skip = ($page - 1) * $this->stocksPerPage;
-        $this->userStocks = $this->userStocks->slice($skip, $this->stocksPerPage);
-
+        $this->userStocks = UserStock::where('user_id', auth()->user()->id)
+                                    ->where('stock_name', 'like', '%' . $this->searchTerm . '%')
+                                    ->paginate(10)
+                                    ->onEachSide(0);
     }
     public function sellStock(int $stockId, int $quantity, float $sellAmount, string $stockName)
     {
     
-        $userStock = UserStock::find($stockId); 
+        $userStock = UserStock::find($stockId);
+
         if (!$userStock) {
             return back()->with('error', 'Ação não encontrada');
         }
@@ -82,17 +69,16 @@ class SellManager extends Component
                 return back()->with('success', 'Venda registrada com sucesso');
             });
         
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             back()->with('error', 'Houve algum erro ao registrar a venda');
             }
     }
 
     public function render()
-    {      
+    {
+        $this->sellIndex();
         return view('livewire.sell-manager',[
             'userStocks' => $this->userStocks,
-            'page' => $this->page,
-            'lastPage' => $this->lastPage
         ]);
     }
 }

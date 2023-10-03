@@ -1,4 +1,4 @@
-<div class="modal-content" x-data="{ 
+{{-- <div class="modal-content" x-data="{ 
     buttonVisible: true,
     quantity: 1,
     showAlert: false,
@@ -65,4 +65,4 @@
             x-on:click="buttonVisible = false">Comprar</button>
         </div>
     </form>
-</div>
+</div> --}}

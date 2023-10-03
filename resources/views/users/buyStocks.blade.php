@@ -7,7 +7,7 @@
         <div class="row mb-2">
             <div class="col-sm-12">
                 <h1 class="col-sm-4">{{ __('Comprar ações') }}</h1>
-                <h2 class="col-sm-4"> {{__('Saldo: R$')  }}{{ Auth::user()->money }}</h2>
+                <h2 class="col-sm-4"> {{__('Saldo: R$')  }}{{ auth()->user()->money }}</h2>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -44,9 +44,9 @@
                     </div>
                     <div class="card-body border border-success text-center" style="background-color: #F0F0F0">
                         @foreach ($stocks as $stock)
-                        <div class="card d-inline-block border border-dark" style="width: 28vh;margin-right: 20px;">
+                        <div class="card d-inline-block border border-dark col-sm-2 mx-2">
                             <img src="{{ $stock->logo }}" class="card-img-top mt-2 border border-dark"
-                                style="height: 10vh; width: 15vh; border-radius:10%;">
+                                style="height: 12vh; width: 15vh; border-radius:10%;">
                             <div class="card-body">
                                 <h2 class="card-title my-0 block-inline"
                                     style="overflow: auto; white-space:nowrap">
@@ -74,7 +74,8 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true" x-data="{ quantity: 1, close: {{ $stock->close }} }">
     <div class="modal-dialog" id="form-buy-stock-modal-dialog">
         <div class="modal-content text-center">
-            <img src="/images/loading.gif" alt="Carregando">
+            {{-- <img src="/images/loading.gif" alt="Carregando"> --}}
+            @livewire('buy-form-manager')
         </div>
     </div>
 </div>  
@@ -82,7 +83,7 @@
 @endsection
 
 @section('scripts')
-<script type="module">
+{{-- <script type="module">
     $(document).ready(function () {
 
 function openBuyModal(event) {
@@ -123,5 +124,5 @@ $('.buy-button').on('click', function () {
         
 });
 
-</script>
+</script> --}}
 @endsection

@@ -18,8 +18,8 @@
         <div class="col-lg-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>Saldo: R${{ Auth::user()->money }} </h3>
-                    <p>Saldo total: R$ {{ Auth::user()->money }}</p>
+                    <h3>Saldo: R${{ auth()->user()->money }} </h3>
+                    <p>Saldo total: R$ {{ auth()->user()->money + auth()->user()->userStock()->sum('stock_price')}}</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
@@ -72,22 +72,4 @@
     </div>
     {{--  --}}
     </div>
-    <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid" style="top: 100px">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">
-                                {{ __('Você está logado!') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
 @endsection
