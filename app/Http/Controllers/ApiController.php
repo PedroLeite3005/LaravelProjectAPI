@@ -48,6 +48,19 @@ class ApiController extends Controller
 
     public function buyStockForm()
     {
-        return view('form_buy_stock');      
+        $client = new Client();
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        $response = $client->get('https://brapi.dev/api/quote/' . $stock, [
+            'headers' => $headers,
+        ]);
+
+        $stockInfo = json_decode($response->getBody())->results[0];
+
+        return view('form_buy_stock', [
+            'stock' => $stockInfo,
+        ]);     
     }
 }
