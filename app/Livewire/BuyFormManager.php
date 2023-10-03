@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use GuzzleHttp\Client;  
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -10,40 +11,54 @@ class BuyFormManager extends Component
 {
 
     public float $money;
-    public $stocks;
     public $stock;
+    public float $totalAmount;
+    public float $stock_price;
+    public string $stock_name;
+    public int $quantity;
 
-    public function mount()
+    public function mount(string $stock)
     {
         $this->money = auth()->user()->money;
+
+        $client = new Client();
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        $response = $client->get('https://brapi.dev/api/quote/' . 'PETR4' . '?token=86wrdergHbq1wsQc8BrWNF', [
+            'headers' => $headers,
+        ]);
+
+        $this->stock = json_decode($response->getBody())->results[0];
     }
 
-    public function index(string $stock_name, float $stock_price, int $quantity, float $totalAmount)
+    public function index()
     {
          /** @var User $user */
          $user = auth()->user();
 
          try {            
-             if (empty($totalAmount) || $user->money < $totalAmount) {
+             if (empty($this->totalAmount) || $user->money < $this->totalAmount) {
                  throw new Exception('Saldo Insuficiente');
              }
  
-             DB::transaction(function() use ($user, $stock_name, $stock_price, $quantity, $totalAmount) {
+             DB::transaction(function() use ($user) {
                  $user->update([
-                     'money' => $user->money - $totalAmount
+                     'money' => $user->money - $this->totalAmount
                  ]);
  
                  $user->userStock()->create([
-                     'stock_name' => $stock_name, 
-                     'stock_price' => $stock_price, 
-                     'stock_quantity' => $quantity, 
+                     'stock_name' => $this->stock_name, 
+                     'stock_price' => $this->stock_price, 
+                     'stock_quantity' => $this->quantity, 
                  ]);
  
                  $user->transactionHistory()->create([
                      'type' => 'compra',
-                     'name' => $stock_name,
-                     'quantity' => $quantity, 
-                     'price' => $totalAmount,
+                     'name' => $this->stock_name,
+                     'quantity' => $this->quantity, 
+                     'price' => $this->totalAmount,
                  ]);
              });
  
@@ -62,7 +77,7 @@ class BuyFormManager extends Component
     public function render()
     {
         return view('livewire.buy-form-manager', [
-            'stock' => $this->stocks
-        ]);
+            'stock' => $this->stock,
+        ]);	
     }
 }

@@ -70,16 +70,8 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true" x-data="{ quantity: 1, close: {{ $stock->close }} }">
-    <div class="modal-dialog" id="form-buy-stock-modal-dialog">
-        <div class="modal-content text-center">
-            {{-- <img src="/images/loading.gif" alt="Carregando"> --}}
-            @livewire('buy-form-manager')
-        </div>
-    </div>
-</div>  
-
+ 
+@livewire('buy-form-manager', ['stock' => $stock->stock])
 @endsection
 
 @section('scripts')
@@ -89,15 +81,14 @@
 function openBuyModal(event) {
     let stock = $(event.target).data('stock');
     axios.get('/stock/buy/' + stock)
-        .then((response) => {
-            let html = response.data;
-            $('#form-buy-stock-modal-dialog').html(html);
-        });
+         .then((response) => {
+             let html = response.data;
+             $('#form-buy-stock-modal-dialog').html(html);
+         });
 }
 
-$('.buy-button').on('click', openBuyModal); 
-
 $('.buy-button').on('click', function () {
+    //openBuyModal(this);
     var stockStock = $(this).data('stock-stock');
     var stockClose = $(this).data('stock-close');
 
@@ -122,7 +113,7 @@ $('.buy-button').on('click', function () {
     
 });
         
-});
+}); 
 
 </script> --}}
 @endsection

@@ -17,7 +17,6 @@ class SellManager extends Component
     private $userStocks;
     private float $money;
 
-    public $stock_id;
     public $searchTerm = '';
 
     public function mount()
