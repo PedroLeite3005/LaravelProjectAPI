@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="d-flex col-sm-6 my-2 col-xxl-8" x-data="{
+                    <div class="d-flex col-sm-12 my-2 col-xxl-8 justify-content-between" x-data="{
                         searchTerm: '',
                         search() {
                             let url = '{{ route('stocks.index', [
@@ -30,17 +30,17 @@
                             location.href = url
                         }
                     }">
-                        <input class="form-control me-2" type="search" placeholder="Nome/Código" name="searchCode" x-model="searchTerm">
+                        <input class="form-control me-2 col-sm-6" type="search" placeholder="Nome/Código" name="searchCode" x-model="searchTerm">
                         <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
-                    </div>
-                    <div class="d-flex justify-content-end p-2">
-                        <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
-                        @if($page > 1)
-                            <a href="{{ route('stocks.index', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
-                        @endif
-                        @if($page < $lastPage)      
-                            <a href="{{ route('stocks.index', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
-                        @endif
+                        <div class="d-flex inline-block mx-1">
+                            <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
+                            @if($page > 1)
+                                <a href="{{ route('stocks.index', ['page' => $page-1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm mr-2">Anterior</a>
+                            @endif
+                            @if($page < $lastPage)      
+                                <a href="{{ route('stocks.index', ['page' => $page+1, 'searchTerm' => $searchTerm]) }}" class="btn btn-secondary btn-sm">Próxima</a>
+                            @endif
+                        </div>
                     </div>
                     <div class="card-body border border-success text-center" style="background-color: #F0F0F0">
                         @foreach ($stocks as $stock)

@@ -2,17 +2,13 @@
 
 namespace App\Livewire;
 
-use GuzzleHttp\Client; 
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
 class BuyFormManager extends Component
 {
-    public $totalAmount;
-    public $stock_name;
-    public $stock_price;
-    public $quantity;
+
     public float $money;
     public $stocks;
     public $stock;
@@ -20,51 +16,34 @@ class BuyFormManager extends Component
     public function mount()
     {
         $this->money = auth()->user()->money;
-        $this->stock = request('stock');
     }
 
-    public function list()
-    {
-        $client = new Client();
-        $headers = [
-            'Accept' => 'application/json',
-        ];
-
-        $response = $client->get('https://brapi.dev/api/quote/' . $this->stock . '?token=86wrdergHbq1wsQc8BrWNF', [
-            'headers' => $headers,
-        ]);
-
-        $stockInfo = json_decode($response->getBody())->results[0];
-      
-        $this->stocks = $stockInfo;
-    }
-
-    public function index()
+    public function index(string $stock_name, float $stock_price, int $quantity, float $totalAmount)
     {
          /** @var User $user */
          $user = auth()->user();
 
          try {            
-             if (empty($this->totalAmount) || $user->money < $this->totalAmount) {
+             if (empty($totalAmount) || $user->money < $totalAmount) {
                  throw new Exception('Saldo Insuficiente');
              }
  
-             DB::transaction(function() use ($user) {
+             DB::transaction(function() use ($user, $stock_name, $stock_price, $quantity, $totalAmount) {
                  $user->update([
-                     'money' => $user->money - $this->totalAmount
+                     'money' => $user->money - $totalAmount
                  ]);
  
                  $user->userStock()->create([
-                     'stock_name' => $this->stock_name, 
-                     'stock_price' => $this->stock_price, 
-                     'stock_quantity' => $this->quantity, 
+                     'stock_name' => $stock_name, 
+                     'stock_price' => $stock_price, 
+                     'stock_quantity' => $quantity, 
                  ]);
  
                  $user->transactionHistory()->create([
                      'type' => 'compra',
-                     'name' => $this->stock_name,
-                     'quantity' => $this->quantity, 
-                     'price' => $this->totalAmount,
+                     'name' => $stock_name,
+                     'quantity' => $quantity, 
+                     'price' => $totalAmount,
                  ]);
              });
  
