@@ -70,7 +70,14 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
- 
+{{-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true" x-data="{ quantity: 1, close: {{ $stock->close }} }">
+<div class="modal-dialog" id="form-buy-stock-modal-dialog">
+    <div class="modal-content text-center">
+        <img src="/images/loading.gif" alt="Carregando">
+    </div>
+</div>
+</div>  --}}
 @livewire('buy-form-manager', ['stock' => $stock->stock])
 @endsection
 

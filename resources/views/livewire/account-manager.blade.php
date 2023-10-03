@@ -48,7 +48,7 @@
                         <h3>RETIRAR</h3>
                         <form wire:submit.prevent="withdraw">
                             <input class="form-control me-2 my-2 border border-dark" placeholder="Valor" 
-                            type="text" wire:model="withdrawValue">
+                            type="text" wire:model="withdrawValue" autocomplete="off">
                             @error('withdrawValue') <span class="error">{{ $message }}</span>@enderror
                             <br>
                             <input type="submit" class="btn btn-warning col-lg-8 

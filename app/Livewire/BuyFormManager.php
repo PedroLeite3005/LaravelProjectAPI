@@ -13,20 +13,22 @@ class BuyFormManager extends Component
     public float $money;
     public $stock;
     public float $totalAmount;
-    public float $stock_price;
+    public float $stock_price = 0.0;
     public string $stock_name;
-    public int $quantity;
+    public int $quantity = 1;
 
-    public function mount(string $stock)
+    public function mount(string $stock = 'PETR4')
     {
         $this->money = auth()->user()->money;
+        $this->stock_name = $stock;
+        $this->totalAmount = $this->quantity * $this->stock_price;
 
         $client = new Client();
         $headers = [
             'Accept' => 'application/json',
         ];
 
-        $response = $client->get('https://brapi.dev/api/quote/' . 'PETR4' . '?token=86wrdergHbq1wsQc8BrWNF', [
+        $response = $client->get('https://brapi.dev/api/quote/' . $stock . '?token=86wrdergHbq1wsQc8BrWNF', [
             'headers' => $headers,
         ]);
 
