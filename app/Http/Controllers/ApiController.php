@@ -19,7 +19,7 @@ class ApiController extends Controller
             'Accept' => 'application/json',
         ];
 
-        $response = $client->get('https://brapi.dev/api/quote/list', [
+        $response = $client->get('https://brapi.dev/api/quote/list?token=86wrdergHbq1wsQc8BrWNF', [
             'headers' => $headers,
             'decode_content' => false
         ]);

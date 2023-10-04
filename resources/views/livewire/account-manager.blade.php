@@ -4,7 +4,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-2 mx-4">{{ __('CONTA') }}</h1>
-                    <h2 class="mx-4 m-2">Saldo: R${{ Auth::user()->money  }}</h2>
+                    <h2 class="mx-4 m-2">Saldo: R${{ auth()->user()->money  }}</h2>
                     <a class="btn btn-dark disabled placeholder col-10" aria-disabled="true"></a>
                 </div><!-- /.col -->
             </div><!-- /.row -->

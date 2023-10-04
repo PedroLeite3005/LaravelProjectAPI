@@ -11,6 +11,16 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 </div>
 <!-- /.content-header -->
 
@@ -30,8 +40,10 @@
                             location.href = url
                         }
                     }">
-                        <input class="form-control me-2 col-sm-6" type="search" placeholder="Nome/Código" name="searchCode" x-model="searchTerm">
-                        <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
+                        <div class="d-flex justify-content-start col-sm-12 my-2 col-xxl-12">
+                            <input class="form-control me-2 col-sm-6" type="search" placeholder="Nome/Código" name="searchCode" x-model="searchTerm">
+                            <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
+                        </div>
                         <div class="d-flex inline-block mx-1">
                             <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
                             @if($page > 1)
@@ -56,7 +68,7 @@
                                 <h6 class="card-subtitle text-body-secondary text-muted ">{{ $stock->stock }}</h6>
                                 <h5 class="card-text mx-3">R$ {{ $stock->close }}</h5>
                                 <button type="button" class="btn btn-primary my-1 buy-button"
-                                        data-stock="{{$stock->stock}}"
+                                        data-stock="{{ $stock->stock }}"
                                         data-toggle="modal"
                                         data-target="#staticBackdrop">Comprar</button>
                             </div>
@@ -69,58 +81,11 @@
         <!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
-<!-- /.content -->
-{{-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-aria-labelledby="staticBackdropLabel" aria-hidden="true" x-data="{ quantity: 1, close: {{ $stock->close }} }">
-<div class="modal-dialog" id="form-buy-stock-modal-dialog">
-    <div class="modal-content text-center">
-        <img src="/images/loading.gif" alt="Carregando">
-    </div>
-</div>
-</div>  --}}
+
 @livewire('buy-form-manager', ['stock' => $stock->stock])
+
 @endsection
 
 @section('scripts')
-{{-- <script type="module">
-    $(document).ready(function () {
 
-function openBuyModal(event) {
-    let stock = $(event.target).data('stock');
-    axios.get('/stock/buy/' + stock)
-         .then((response) => {
-             let html = response.data;
-             $('#form-buy-stock-modal-dialog').html(html);
-         });
-}
-
-$('.buy-button').on('click', function () {
-    //openBuyModal(this);
-    var stockStock = $(this).data('stock-stock');
-    var stockClose = $(this).data('stock-close');
-
-    $('#staticBackdropLabel').text('Comprar ' + stockStock + '?');
-    $('#stock-close').text(stockClose);
-    $('#stock-stock').text(stockStock);
-
-    let modalContent =
-        `
-        <div class='text-center'>
-            <img src="/images/loading.gif" alt="Carregando">
-        </div>
-    `;
-
-    $('#staticBackdrop .modal-content').html(modalContent); 
-    $('#staticBackdrop').modal('hide'); 
-
-    @if (session('status')) 
-        $('#staticBackdrop .modal-content').html(modalContent); 
-        $('#staticBackdrop').modal('show');
-    @endif
-    
-});
-        
-}); 
-
-</script> --}}
 @endsection

@@ -9,19 +9,18 @@ use Exception;
 
 class BuyFormManager extends Component
 {
-
-    public float $money;
+    public string $stock_name;
+    public float $stock_price = 0.0;
     public $stock;
     public float $totalAmount;
-    public float $stock_price = 0.0;
-    public string $stock_name;
     public int $quantity = 1;
+    public $isLoading = false;
 
-    public function mount(string $stock = 'PETR4')
+    protected float $money;
+
+    public function mount(string $stock)
     {
         $this->money = auth()->user()->money;
-        $this->stock_name = $stock;
-        $this->totalAmount = $this->quantity * $this->stock_price;
 
         $client = new Client();
         $headers = [
@@ -30,13 +29,19 @@ class BuyFormManager extends Component
 
         $response = $client->get('https://brapi.dev/api/quote/' . $stock . '?token=86wrdergHbq1wsQc8BrWNF', [
             'headers' => $headers,
+            'decode_content' => false
         ]);
 
         $this->stock = json_decode($response->getBody())->results[0];
+
+        $this->stock_name = $this->stock->symbol;
+        $this->stock_price = $this->stock->regularMarketPrice;
+        $this->totalAmount = $this->quantity * $this->stock_price;
     }
 
     public function index()
     {
+        $this->isLoading = true;
          /** @var User $user */
          $user = auth()->user();
 
@@ -63,16 +68,10 @@ class BuyFormManager extends Component
                      'price' => $this->totalAmount,
                  ]);
              });
- 
-             return response()->json([
-                 'success' => true,
-                 'message' => 'Débito registrado na conta'
-             ]);
+
+             return redirect()->route('stocks.index')->with('status', $this->stock_name .' Comprada com sucesso!');
          } catch (\Exception $e) {
-             return response()->json([
-                 'success' => false,
-                 'message' => $e->getMessage()
-             ]);
+            return redirect()->route('stocks.index')->with('error', 'Não foi possível comprar: '. $this->stock_name);
          }
     }
 
