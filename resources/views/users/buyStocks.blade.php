@@ -40,10 +40,8 @@
                             location.href = url
                         }
                     }">
-                        <div class="d-flex justify-content-start col-sm-12 my-2 col-xxl-12">
-                            <input class="form-control me-2 col-sm-6" type="search" placeholder="Nome/Código" name="searchCode" x-model="searchTerm">
-                            <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
-                        </div>
+                        <input class="form-control me-2 col-sm-6" type="search" placeholder="Nome/Código" name="searchCode" x-model="searchTerm">
+                        <button class="btn btn-outline-success" type="submit" x-on:click="search()">Pesquisar</button>
                         <div class="d-flex inline-block mx-1">
                             <p class="my-0 mx-2">Página {{ $page }} de um  total de {{ $lastPage }}</p>
                             @if($page > 1)
@@ -64,13 +62,14 @@
                                     style="overflow: auto; white-space:nowrap">
                                     {{ $stock->name }}</h2>
                             </div>
-                            <div class="card-text">
+                            <div class="card-text" x-data="{ stock: '{{ $stock->stock }}' }">
                                 <h6 class="card-subtitle text-body-secondary text-muted ">{{ $stock->stock }}</h6>
                                 <h5 class="card-text mx-3">R$ {{ $stock->close }}</h5>
                                 <button type="button" class="btn btn-primary my-1 buy-button"
                                         data-stock="{{ $stock->stock }}"
                                         data-toggle="modal"
-                                        data-target="#staticBackdrop">Comprar</button>
+                                        data-target="#staticBackdrop"
+                                        x-on:click="$dispatch('select-stock', { stock: stock })">Comprar</button>
                             </div>
                         </div>
                         @endforeach
@@ -82,7 +81,7 @@
     </div><!-- /.container-fluid -->
 </div>
 
-@livewire('buy-form-manager', ['stock' => $stock->stock])
+@livewire('buy-form-manager')
 
 @endsection
 

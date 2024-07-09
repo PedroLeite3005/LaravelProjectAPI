@@ -46,7 +46,14 @@
                     </p>
                 </a>
             </li>
-                </ul>
+             
+            <li class="nav-item">
+                <a href="{{ route('mercado-livre.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-handshake"></i>
+                    <p>
+                        {{ __('Mercado Livre') }}
+                    </p>
+                </a>
             </li>
         </ul>
     </nav>

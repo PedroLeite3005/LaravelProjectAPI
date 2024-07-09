@@ -1,6 +1,6 @@
 <div>
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog" id="form-buy-stock-modal-dialog">
             <div class="modal-content text-center">
                 <div class="modal-content"> 
@@ -16,16 +16,16 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-lg">Quantidade</span>
                                 </div>
-                                <input wire:model="quantity" type="number" class="form-control" aria-label="Large" 
+                                <input wire:model.live="quantity" wire:loading.attr="disabled" type="number" class="form-control" aria-label="Large" 
                                 aria-describedby="inputGroup-sizing-sm" min="1">
                             </div>
                             <br>
-                            <h2>Valor: R$ <span>{{ number_format($totalAmount, 2) }}</span></h2>
+                            <h2>Valor: R$ <span wire:model='totalAmount'>{{ round($quantity * $stock_price, 2) }}</span></h2>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" wire:loading.remove>Cancelar</button>
                             <button type="submit" class="btn btn-success" wire:loading.remove>Comprar</button>
-                            <button type="submit" class="btn btn-success" wire:loading disabled>Carregando...</button>   
+                            <p wire:loading>Carregando...</p> 
                         </div>
                     </form>
                 </div>

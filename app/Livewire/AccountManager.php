@@ -28,7 +28,7 @@ class AccountManager extends Component
  
     public function mount()
     {
-        $this->money = auth()->user()->money;
+        $this->money = auth()->user()->money ?? 0;
     }
 
     public function deposit()

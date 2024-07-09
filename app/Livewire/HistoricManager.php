@@ -3,8 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\TransactionHistory;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Livewire\Component;
 
